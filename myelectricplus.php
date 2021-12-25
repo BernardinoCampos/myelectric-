@@ -85,12 +85,12 @@
 			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('LAST 30 DAYS') ?></h5>
 			<h3 class="appbox-value mb-0 text-sm-larger">
 				<span class="u1a"></span>
-				<span id="month_kwh"></span>
+				<span id="last_kwh"></span>
 				<small class="u1b"></small>
 			</h3>
 			<h5 class="appbox-units my-0">
 				<span class="u2a"></span>
-				<span id="month_kwhd"></span>
+				<span id="last_kwhd"></span>
 				<span class="u2b">/day</span>
 			</h5>
 		</div>
@@ -520,8 +520,22 @@ function fastupdate(event)
         startofyear = feed.getvalue(use_kwh,time);
         last_startofyeartime = time;
     }
-    if (startofyear===false) startofyear = [startalltime*1000,0];     
-    
+    if (startofyear===false) startofyear = [startalltime*1000,0];
+
+    // Last 30 days total
+    var last_kwh = alltime_kwh - (startofmonth[1]);
+    $("#last_kwh").html(Math.round(scale*last_kwh));
+    var days = ((feeds[use_kwh].time - (startofmonth[0]*0.001))/86400);
+    $("#last_kwhd").html((scale*last_kwh/days).toFixed(1));
+    // --------------------------------------------------------------------------------------------------------
+    // YEAR: repeat same process as above (scale is unitcost)
+    var time = new Date(now.getFullYear(),0,1).getTime();
+    if (time!=last_startofyeartime) {
+        startofyear = feed.getvalue(use_kwh,time);
+        last_startofyeartime = time;
+    }
+    if (startofyear===false) startofyear = [startalltime*1000,0];
+
     // Year total
     var year_kwh = alltime_kwh - (startofyear[1]);
     $("#year_kwh").html(Math.round(scale*year_kwh));
