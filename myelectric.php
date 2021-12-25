@@ -80,6 +80,22 @@
             </h5>
         </div>
 
+
+		<div class="appbox mb-3 text-primary">
+			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('LAST 30 DAYS') ?></h5>
+			<h3 class="appbox-value mb-0 text-sm-larger">
+				<span class="u1a"></span>
+				<span id="month_kwh"></span>
+				<small class="u1b"></small>
+			</h3>
+			<h5 class="appbox-units my-0">
+				<span class="u2a"></span>
+				<span id="month_kwhd"></span>
+				<span class="u2b">/day</span>
+			</h5>
+		</div>
+
+
         <div class="appbox mb-3 text-primary">
             <h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('YEAR') ?></h5>
             <h3 class="appbox-value mb-0 text-sm-larger">
@@ -117,7 +133,7 @@
         <div class="row-fluid">
             <div class="span9 appconfig-description">
                 <div class="appconfig-description-inner text-light">
-                    <h2 class="appconfig-title text-primary"><?php echo _('My Electric'); ?></h2>
+                    <h2 class="appconfig-title text-primary"><?php echo _('My Electric Plus'); ?></h2>
                     <p class="lead">The My Electric app is a simple home energy monitoring app for exploring home or building electricity consumption over time. It includes a real-time view and a historic kWh per day bar graph.</p>
                     <p><strong class="text-white">Auto configure:</strong> This app can auto-configure connecting to emoncms feeds with the names shown on the right, alternatively feeds can be selected by clicking on the edit button.</p>
                     <p><strong class="text-white">Cumulative kWh</strong> feeds can be generated from power feeds with the power_to_kwh input processor.</p>
