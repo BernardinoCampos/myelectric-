@@ -528,7 +528,7 @@ function fastupdate(event)
     let feed30d = false;
     while (!works) {
         let time_30d = new Date();
-        time_30d.SetDate(date.getDate() - numDays);
+        time_30d.SetDate(time_30d.getDate() - numDays);
         feed30d = feed.getvalue(use_kwh, time_30d);
 
         if (feed30d===false) {
