@@ -532,7 +532,7 @@ function fastupdate(event)
         feed30d = feed.getvalue(use_kwh, time_30d);
 
         if (feed30d===false && numDays>1) {
-            log.console(time_30d, numDays, feed30d);
+            console.log(time_30d, numDays, feed30d);
             numDays--;
 		}
         else {
