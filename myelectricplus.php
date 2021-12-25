@@ -525,6 +525,7 @@ function fastupdate(event)
     // Last 30 days total
 	let numDays=30;
     let works=false;
+    let feed30d = false;
     while (!works) {
         let time_30d = new Date();
         time_30d.SetDate(date.getDate() - numDays);
