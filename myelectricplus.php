@@ -523,9 +523,21 @@ function fastupdate(event)
     if (startofyear===false) startofyear = [startalltime*1000,0];
 
     // Last 30 days total
-    var time_30d = new Date();
-    time_30d.SetDate(date.getDate()-30);
-    feed30d = feed.getvalue(use_kwh,time_30d);
+	let numDays=30;
+    let works=false;
+    while (!works) {
+        var time_30d = new Date();
+        time_30d.SetDate(date.getDate() - numDays);
+        feed30d = feed.getvalue(use_kwh, time_30d);
+
+        if (feed30d===false) {
+            numDays--;
+		}
+        else {
+            works=true;
+		}
+    }
+
     var last_kwh = alltime_kwh - (feed30d[1]);
     $("#last_kwh").html(Math.round(scale*last_kwh));
     var days = ((feeds[use_kwh].time - (feed30d[0]*0.001))/86400);
