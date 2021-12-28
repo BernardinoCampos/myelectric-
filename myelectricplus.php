@@ -51,7 +51,7 @@
     </div>
 
 
-    <div id="breakdown" class="d-flex justify-content-between py-lg-2 text-light">
+    <div id="breakdown" class="d-flex justify-content-between py-lg-2 text-light" style="max-width: 44rem !important;">
 
         <div class="appbox mb-2 text-primary">
             <h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('WEEK') ?></h5>
