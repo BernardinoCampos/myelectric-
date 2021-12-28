@@ -52,7 +52,8 @@
 
 
     <div id="breakdown" class="d-flex justify-content-between py-lg-2 text-light">
-        <div class="appbox mb-3 text-primary">
+
+        <div class="appbox mb-2 text-primary">
             <h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('WEEK') ?></h5>
             <h3 class="appbox-value mb-0 text-sm-larger">
                 <span class="u1a"></span>
@@ -66,8 +67,8 @@
             </h5>
         </div>
 
-		<div class="appbox mb-3 text-primary">
-			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('LAST 7 DAYS') ?></h5>
+		<div class="appbox mb-2 text-primary">
+			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('7 DAYS') ?></h5>
 			<h3 class="appbox-value mb-0 text-sm-larger">
 				<span class="u1a"></span>
 				<span id="last_7kwh"></span>
@@ -81,7 +82,7 @@
 		</div>
 
 
-		<div class="appbox mb-3 text-primary">
+		<div class="appbox mb-2 text-primary">
             <h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('MONTH') ?></h5>
             <h3 class="appbox-value mb-0 text-sm-larger">
                 <span class="u1a"></span>
@@ -96,8 +97,8 @@
         </div>
 
 
-		<div class="appbox mb-3 text-primary">
-			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('LAST 30 DAYS') ?></h5>
+		<div class="appbox mb-2 text-primary">
+			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('30 DAYS') ?></h5>
 			<h3 class="appbox-value mb-0 text-sm-larger">
 				<span class="u1a"></span>
 				<span id="last_kwh"></span>
@@ -111,7 +112,7 @@
 		</div>
 
 
-        <div class="appbox mb-3 text-primary">
+        <div class="appbox mb-2 text-primary">
             <h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('YEAR') ?></h5>
             <h3 class="appbox-value mb-0 text-sm-larger">
                 <span class="u1a"></span>
@@ -125,7 +126,7 @@
             </h5>
         </div>
 
-        <div class="appbox mb-3 text-primary">
+        <div class="appbox mb-2 text-primary">
             <h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('ALL') ?></h5>
             <h3 class="appbox-value mb-0 text-sm-larger">
                 <span class="u1a"></span>
