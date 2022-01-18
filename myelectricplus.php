@@ -99,9 +99,9 @@
 
 		<div class="appbox mb-2 text-primary">
 			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('30 DAYS') ?></h5>
-			<h1 class="appbox-value mb-0 text-sm-larger">
-				<span id="last_interval"></span>
-			</h1>
+			<h6 class="appbox-value mb-0 text-sm-larger">
+				<small><span id="last_interval"></span></small>
+			</h6>
 			<h3 class="appbox-value mb-0 text-sm-larger">
 				<span class="u1a"></span>
 				<span id="last_kwh"></span>
@@ -570,7 +570,7 @@ function fastupdate(event)
 		}
     }
 
-    var last_interval = time_30d.getMonth()+"/"+time_30d.getDay();
+    var last_interval = time_30d.getDate()+"/"+(time_30d.getMonth()+1);
     $("#last_interval").html(last_interval);
     var last_kwh = alltime_kwh - (feed30d[1]);
     $("#last_kwh").html(Math.round(scale*last_kwh));
