@@ -99,7 +99,9 @@
 
 		<div class="appbox mb-2 text-primary">
 			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('30 DAYS') ?></h5>
-			<small><span id="last_interval"></span></small>
+			<h1 class="appbox-value mb-0 text-sm-larger">
+				<span id="last_interval"></span>
+			</h1>
 			<h3 class="appbox-value mb-0 text-sm-larger">
 				<span class="u1a"></span>
 				<span id="last_kwh"></span>
