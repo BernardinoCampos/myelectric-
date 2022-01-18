@@ -568,7 +568,8 @@ function fastupdate(event)
 		}
     }
 
-    var last_interval = time_30d.getDate()+"/"+(time_30d.getMonth()+1)+" a "+Date().getDate()+"/"+(Date().getMonth()+1);
+    let agora=new Date();
+    var last_interval = time_30d.getDate()+"/"+(time_30d.getMonth()+1)+" a "+agora.getDate()+"/"+(agora.getMonth()+1);
     $("#last_interval").html(last_interval);
     var last_kwh = alltime_kwh - (feed30d[1]);
     $("#last_kwh").html(Math.round(scale*last_kwh));
