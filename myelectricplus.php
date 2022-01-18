@@ -79,6 +79,7 @@
 				<span id="last_7kwhd"></span>
 				<span class="u2b">/day</span>
 			</h5>
+			<small><span id="last_7dinterval"></span></small><br>
 		</div>
 
 
@@ -531,6 +532,9 @@ function fastupdate(event)
 	time_7d.setDate(time_7d.getDate() - 7);
     feed7d = feed.getvalue(use_kwh, time_7d.getTime());
 
+    let agora=new Date();
+    var last_7dinterval = time_7d.getDate()+"/"+(time_7d.getMonth()+1)+" a "+agora.getDate()+"/"+(agora.getMonth()+1);
+    $("#last_7dinterval").html(last_7dinterval);
     var last_7kwh = alltime_kwh - (feed7d[1]);
     $("#last_7kwh").html(Math.round(scale*last_7kwh));
     var days = ((feeds[use_kwh].time - (feed7d[0]*0.001))/86400);
@@ -568,7 +572,6 @@ function fastupdate(event)
 		}
     }
 
-    let agora=new Date();
     var last_interval = time_30d.getDate()+"/"+(time_30d.getMonth()+1)+" a "+agora.getDate()+"/"+(agora.getMonth()+1);
     $("#last_interval").html(last_interval);
     var last_kwh = alltime_kwh - (feed30d[1]);
