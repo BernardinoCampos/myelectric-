@@ -556,8 +556,9 @@ function fastupdate(event)
 	let numDays=30;
     let works=false;
     let feed30d = false;
+    let time_30d = new Date();
     while (!works) {
-        let time_30d = new Date();
+        time_30d = new Date();
         time_30d.setDate(time_30d.getDate() - numDays);
         feed30d = feed.getvalue(use_kwh, time_30d.getTime());
 
