@@ -570,7 +570,7 @@ function fastupdate(event)
 		}
     }
 
-    var last_interval = time_30d.format("DD-MM");
+    var last_interval = time_30d.getMonth()+"/"+time_30d.getDay();
     var last_kwh = alltime_kwh - (feed30d[1]);
     $("#last_kwh").html(Math.round(scale*last_kwh));
     var days = ((feeds[use_kwh].time - (feed30d[0]*0.001))/86400);
