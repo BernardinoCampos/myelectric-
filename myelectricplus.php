@@ -516,7 +516,7 @@
         $("#last_7dinterval").html(last_7dinterval);
         var last_7kwh = alltime_kwh - feed7d;
         $("#last_7kwh").html(Math.round(scale*last_7kwh));
-        var days = ((feeds[use_kwh].time - (feed7d[0]*0.001))/86400);
+        var days = ((feeds[use_kwh].time - (feed7d*0.001))/86400);
         $("#last_7kwhd").html((scale*last_7kwh/days).toFixed(1));
 
         // Monthly total
@@ -555,7 +555,7 @@
     $("#last_interval").html(last_interval);
     var last_kwh = alltime_kwh - feed30d;
     $("#last_kwh").html(Math.round(scale*last_kwh));
-    var days = ((feeds[use_kwh].time - (feed30d[0]*0.001))/86400);
+    var days = ((feeds[use_kwh].time - (feed30d*0.001))/86400);
     $("#last_kwhd").html((scale*last_kwh/days).toFixed(1));
     // --------------------------------------------------------------------------------------------------------
     // YEAR: repeat same process as above (scale is unitcost)
