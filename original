@@ -51,8 +51,8 @@
 	</div>
 
 
-	<div id="breakdown" class="d-flex justify-content-between py-lg-2 text-light" style="max-width: 44rem !important;">
-		<div class="appbox mb-2 text-primary">
+	<div id="breakdown" class="d-flex justify-content-between py-lg-2 text-light">
+		<div class="appbox mb-3 text-primary">
 			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('WEEK') ?></h5>
 			<h3 class="appbox-value mb-0 text-sm-larger">
 				<span class="u1a"></span>
@@ -66,22 +66,7 @@
 			</h5>
 		</div>
 
-		<div class="appbox mb-2 text-primary">
-			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('7 DAYS') ?></h5>
-			<h3 class="appbox-value mb-0 text-sm-larger">
-				<span class="u1a"></span>
-				<span id="last_7kwh"></span>
-				<small class="u1b"></small>
-			</h3>
-			<h5 class="appbox-units my-0">
-				<span class="u2a"></span>
-				<span id="last_7kwhd"></span>
-				<span class="u2b">/day</span>
-			</h5>
-			<small><span id="last_7dinterval"></span></small><br>
-		</div>
-
-		<div class="appbox mb-2 text-primary">
+		<div class="appbox mb-3 text-primary">
 			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('MONTH') ?></h5>
 			<h3 class="appbox-value mb-0 text-sm-larger">
 				<span class="u1a"></span>
@@ -95,22 +80,7 @@
 			</h5>
 		</div>
 
-		<div class="appbox mb-2 text-primary">
-			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('30 DAYS') ?></h5>
-			<h3 class="appbox-value mb-0 text-sm-larger">
-				<span class="u1a"></span>
-				<span id="last_kwh"></span>
-				<small class="u1b"></small>
-			</h3>
-			<h5 class="appbox-units my-0">
-				<span class="u2a"></span>
-				<span id="last_kwhd"></span>
-				<span class="u2b">/day</span>
-			</h5>
-			<small><span id="last_interval"></span></small><br>
-		</div>
-
-		<div class="appbox mb-2 text-primary">
+		<div class="appbox mb-3 text-primary">
 			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('YEAR') ?></h5>
 			<h3 class="appbox-value mb-0 text-sm-larger">
 				<span class="u1a"></span>
@@ -124,7 +94,7 @@
 			</h5>
 		</div>
 
-		<div class="appbox mb-2 text-primary">
+		<div class="appbox mb-3 text-primary">
 			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('ALL') ?></h5>
 			<h3 class="appbox-value mb-0 text-sm-larger">
 				<span class="u1a"></span>
@@ -506,22 +476,6 @@
         }
         if (startofmonth===false) startofmonth = 0;
 
-        // Last 7 days total
-        let time_7d = new Date();
-        time_7d.setDate(time_7d.getDate() - 7);
-        feed7d = feed.getvalue(use_kwh, time_7d*0.001);
-
-        console.log(alltime_kwh);
-        console.log(feed7d);
-
-        let agora=new Date();
-        var last_7dinterval = time_7d.getDate()+"/"+(time_7d.getMonth()+1)+" a "+agora.getDate()+"/"+(agora.getMonth()+1);
-        $("#last_7dinterval").html(last_7dinterval);
-        var last_7kwh = alltime_kwh - (feed7d[1]);
-        $("#last_7kwh").html(Math.round(scale*last_7kwh));
-        var days = ((feeds[use_kwh].time - (feed7d[0]*0.001))/86400);
-        $("#last_7kwhd").html((scale*last_7kwh/days).toFixed(1));
-
         // Monthly total
         var month_kwh = alltime_kwh - startofmonth;
         $("#month_kwh").html(Math.round(scale*month_kwh));
@@ -535,39 +489,6 @@
             last_startofyeartime = time;
         }
         if (startofyear===false) startofyear = 0;
-
-    // Last 30 days total
-	let numDays=30;
-    let works=false;
-    let feed30d = false;
-    let time_30d = new Date();
-    while (!works) {
-        time_30d = new Date();
-        time_30d.setDate(time_30d.getDate() - numDays);
-        feed30d = feed.getvalue(use_kwh, time_30d*0.001);
-
-        if (feed30d===false && numDays>1) {
-            numDays--;
-		}
-        else {
-            works=true;
-		}
-    }
-
-    var last_interval = time_30d.getDate()+"/"+(time_30d.getMonth()+1)+" a "+agora.getDate()+"/"+(agora.getMonth()+1);
-    $("#last_interval").html(last_interval);
-    var last_kwh = alltime_kwh - (feed30d[1]);
-    $("#last_kwh").html(Math.round(scale*last_kwh));
-    var days = ((feeds[use_kwh].time - (feed30d[0]*0.001))/86400);
-    $("#last_kwhd").html((scale*last_kwh/days).toFixed(1));
-    // --------------------------------------------------------------------------------------------------------
-    // YEAR: repeat same process as above (scale is unitcost)
-    var time = new Date(now.getFullYear(),0,1).getTime();
-    if (time!=last_startofyeartime) {
-        startofyear = feed.getvalue(use_kwh,time);
-        last_startofyeartime = time;
-    }
-    if (startofyear===false) startofyear = [startalltime*1000,0];
 
         // Year total
         var year_kwh = alltime_kwh - startofyear;
