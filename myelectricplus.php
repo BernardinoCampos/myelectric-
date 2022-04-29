@@ -52,7 +52,7 @@
 
 
 	<div id="breakdown" class="d-flex justify-content-between py-lg-2 text-light">
-		<div class="appbox mb-3 text-primary">
+		<div class="appbox mb-2 text-primary">
 			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('WEEK') ?></h5>
 			<h3 class="appbox-value mb-0 text-sm-larger">
 				<span class="u1a"></span>
@@ -81,7 +81,7 @@
 			<small><span id="last_7dinterval"></span></small><br>
 		</div>
 
-		<div class="appbox mb-3 text-primary">
+		<div class="appbox mb-2 text-primary">
 			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('MONTH') ?></h5>
 			<h3 class="appbox-value mb-0 text-sm-larger">
 				<span class="u1a"></span>
@@ -110,7 +110,7 @@
 			<small><span id="last_interval"></span></small><br>
 		</div>
 
-		<div class="appbox mb-3 text-primary">
+		<div class="appbox mb-2 text-primary">
 			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('YEAR') ?></h5>
 			<h3 class="appbox-value mb-0 text-sm-larger">
 				<span class="u1a"></span>
@@ -124,7 +124,7 @@
 			</h5>
 		</div>
 
-		<div class="appbox mb-3 text-primary">
+		<div class="appbox mb-2 text-primary">
 			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('ALL') ?></h5>
 			<h3 class="appbox-value mb-0 text-sm-larger">
 				<span class="u1a"></span>
