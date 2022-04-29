@@ -358,7 +358,7 @@
     if (reload) {
         reload = false;
         view.calc_interval(1500);
-        timeseries.load("use",feed.getdata(use,view.start,view.end,interval,0,0));
+        timeseries.load("use",feed.getdata(use,view.start,view.end,view.interval));
     }
     
     // --------------------------------------------------------------------
