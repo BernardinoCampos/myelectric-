@@ -511,9 +511,6 @@
         time_7d.setDate(time_7d.getDate() - 7);
         feed7d = feed.getvalue(use_kwh, time_7d*0.001);
 
-        console.log(alltime_kwh);
-        console.log(feed7d);
-
         let agora=new Date();
         var last_7dinterval = time_7d.getDate()+"/"+(time_7d.getMonth()+1)+" a "+agora.getDate()+"/"+(agora.getMonth()+1);
         $("#last_7dinterval").html(last_7dinterval);
@@ -556,7 +553,7 @@
 
     var last_interval = time_30d.getDate()+"/"+(time_30d.getMonth()+1)+" a "+agora.getDate()+"/"+(agora.getMonth()+1);
     $("#last_interval").html(last_interval);
-    var last_kwh = alltime_kwh - (feed30d[1]);
+    var last_kwh = alltime_kwh - feed30d;
     $("#last_kwh").html(Math.round(scale*last_kwh));
     var days = ((feeds[use_kwh].time - (feed30d[0]*0.001))/86400);
     $("#last_kwhd").html((scale*last_kwh/days).toFixed(1));
