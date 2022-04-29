@@ -66,6 +66,21 @@
 			</h5>
 		</div>
 
+		<div class="appbox mb-2 text-primary">
+			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('7 DAYS') ?></h5>
+			<h3 class="appbox-value mb-0 text-sm-larger">
+				<span class="u1a"></span>
+				<span id="last_7kwh"></span>
+				<small class="u1b"></small>
+			</h3>
+			<h5 class="appbox-units my-0">
+				<span class="u2a"></span>
+				<span id="last_7kwhd"></span>
+				<span class="u2b">/day</span>
+			</h5>
+			<small><span id="last_7dinterval"></span></small><br>
+		</div>
+
 		<div class="appbox mb-3 text-primary">
 			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('MONTH') ?></h5>
 			<h3 class="appbox-value mb-0 text-sm-larger">
@@ -78,6 +93,21 @@
 				<span id="month_kwhd"></span>
 				<span class="u2b">/day</span>
 			</h5>
+		</div>
+
+		<div class="appbox mb-2 text-primary">
+			<h5 class="appbox-title my-0 text-light text-sm-larger"><?php echo _('30 DAYS') ?></h5>
+			<h3 class="appbox-value mb-0 text-sm-larger">
+				<span class="u1a"></span>
+				<span id="last_kwh"></span>
+				<small class="u1b"></small>
+			</h3>
+			<h5 class="appbox-units my-0">
+				<span class="u2a"></span>
+				<span id="last_kwhd"></span>
+				<span class="u2b">/day</span>
+			</h5>
+			<small><span id="last_interval"></span></small><br>
 		</div>
 
 		<div class="appbox mb-3 text-primary">
@@ -475,6 +505,19 @@
             last_startofmonthtime = time;
         }
         if (startofmonth===false) startofmonth = 0;
+
+        // Last 7 days total
+        let time_7d = new Date();
+        time_7d.setDate(time_7d.getDate() - 7);
+        feed7d = feed.getvalue(use_kwh, time_7d.getTime());
+
+        let agora=new Date();
+        var last_7dinterval = time_7d.getDate()+"/"+(time_7d.getMonth()+1)+" a "+agora.getDate()+"/"+(agora.getMonth()+1);
+        $("#last_7dinterval").html(last_7dinterval);
+        var last_7kwh = alltime_kwh - (feed7d[1]);
+        $("#last_7kwh").html(Math.round(scale*last_7kwh));
+        var days = ((feeds[use_kwh].time - (feed7d[0]*0.001))/86400);
+        $("#last_7kwhd").html((scale*last_7kwh/days).toFixed(1));
 
         // Monthly total
         var month_kwh = alltime_kwh - startofmonth;
