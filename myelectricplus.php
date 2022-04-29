@@ -509,7 +509,7 @@
         // Last 7 days total
         let time_7d = new Date();
         time_7d.setDate(time_7d.getDate() - 7);
-        feed7d = feed.getvalue(use_kwh, time_7d.getTime());
+        feed7d = feed.getvalue(use_kwh, time_7d*0.001);
 
         let agora=new Date();
         var last_7dinterval = time_7d.getDate()+"/"+(time_7d.getMonth()+1)+" a "+agora.getDate()+"/"+(agora.getMonth()+1);
@@ -541,7 +541,7 @@
     while (!works) {
         time_30d = new Date();
         time_30d.setDate(time_30d.getDate() - numDays);
-        feed30d = feed.getvalue(use_kwh, time_30d.getTime());
+        feed30d = feed.getvalue(use_kwh, time_30d*0.001);
 
         if (feed30d===false && numDays>1) {
             numDays--;
