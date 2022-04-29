@@ -511,6 +511,8 @@
         time_7d.setDate(time_7d.getDate() - 7);
         feed7d = feed.getvalue(use_kwh, time_7d*0.001);
 
+        console.log(feed7d);
+
         let agora=new Date();
         var last_7dinterval = time_7d.getDate()+"/"+(time_7d.getMonth()+1)+" a "+agora.getDate()+"/"+(agora.getMonth()+1);
         $("#last_7dinterval").html(last_7dinterval);
