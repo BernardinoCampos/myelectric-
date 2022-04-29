@@ -339,170 +339,156 @@
         var timenow = now.getTime();
         var powerUnit = config.app && config.app.kw && config.app.kw.value===true ? 'kW' : 'W';
 
-    // --------------------------------------------------------------------------------------------------------
-    // REALTIME POWER GRAPH
-    // -------------------------------------------------------------------------------------------------------- 
-    // Check if the updater ran in the last 60s if it did not the app was sleeping
-    // and so the data needs a full reload.
-    
-    if ((timenow-lastupdate)>60000) {
-        reload = true;
-        var timewindow = view.end - view.start;
-        view.end = timenow;
-        view.start = view.end - timewindow;
-    }
-    
-    lastupdate = timenow;
-    
-    // reload power data
-    if (reload) {
-        reload = false;
-        view.calc_interval(1500);
-        timeseries.load("use",feed.getdata(use,view.start,view.end,view.interval));
-    }
-    
-    // --------------------------------------------------------------------
-    // 1) Get last value of feeds
-    // --------------------------------------------------------------------
-    feeds = feed.listbyid();
-    if (feeds === null) { return; }
-    
-    // set the power now value
-    if (viewmode=="energy") {
-        if (powerUnit==='W') {
-            $("#powernow").html((feeds[use].value*1).toFixed(0)+"W");
+        // --------------------------------------------------------------------------------------------------------
+        // REALTIME POWER GRAPH
+        // --------------------------------------------------------------------------------------------------------
+        // Check if the updater ran in the last 60s if it did not the app was sleeping
+        // and so the data needs a full reload.
+
+        if ((timenow-lastupdate)>60000) {
+            reload = true;
+            var timewindow = view.end - view.start;
+            view.end = timenow;
+            view.start = view.end - timewindow;
+        }
+
+        lastupdate = timenow;
+
+        // reload power data
+        if (reload) {
+            reload = false;
+            view.calc_interval(1500); // npoints = 1500
+            timeseries.load("use",feed.getdata(use,view.start,view.end,view.interval));
+        }
+
+        // --------------------------------------------------------------------
+        // 1) Get last value of feeds
+        // --------------------------------------------------------------------
+        feeds = feed.listbyid();
+        if (feeds === null) { return; }
+
+        // set the power now value
+        if (viewmode=="energy") {
+            if (powerUnit==='W') {
+                $("#powernow").html((feeds[use].value*1).toFixed(0)+"W");
+            } else {
+                $("#powernow").html((feeds[use].value*0.001).toFixed(1)+"kW");
+            }
         } else {
-            $("#powernow").html((feeds[use].value*0.001).toFixed(1)+"kW");
+            // 1000W for an hour (x3600) = 3600000 Joules / 3600,000 = 1.0 kWh x 0.15p = 0.15p/kWh (scaling factor is x3600 / 3600,000 = 0.001)
+            var cost_now = feeds[use].value*1*config.app.unitcost.value*0.001;
+
+            if (cost_now<1.0) {
+                $("#powernow").html(config.app.currency.value+(feeds[use].value*1*config.app.unitcost.value*0.001).toFixed(3)+"/hr");
+            } else {
+                $("#powernow").html(config.app.currency.value+(feeds[use].value*1*config.app.unitcost.value*0.001).toFixed(2)+"/hr");
+            }
         }
-    } else {
-        // 1000W for an hour (x3600) = 3600000 Joules / 3600,000 = 1.0 kWh x 0.15p = 0.15p/kWh (scaling factor is x3600 / 3600,000 = 0.001)
-        var cost_now = feeds[use].value*1*config.app.unitcost.value*0.001;
-        
-        if (cost_now<1.0) {
-            $("#powernow").html(config.app.currency.value+(feeds[use].value*1*config.app.unitcost.value*0.001).toFixed(3)+"/hr");
-        } else {
-            $("#powernow").html(config.app.currency.value+(feeds[use].value*1*config.app.unitcost.value*0.001).toFixed(2)+"/hr");
+        // Advance view
+        if (autoupdate) {
+
+            // move the view along
+            var timerange = view.end - view.start;
+            view.end = timenow;
+            view.start = view.end - timerange;
+
+            timeseries.append(
+                "use",
+                feeds[use].time,
+                feeds[use].value
+            );
+
+            // delete data that is now beyond the start of our view
+            timeseries.trim_start("use",view.start*0.001);
         }
-    }
-    // Advance view
-    if (autoupdate) {
 
-        // move the view along
-        var timerange = view.end - view.start;
-        view.end = timenow;
-        view.start = view.end - timerange;
-        
-        timeseries.append(
-            "use", 
-            feeds[use].time, 
-            feeds[use].value
-        );
-        
-        // delete data that is now beyond the start of our view
-        timeseries.trim_start("use",view.start*0.001);
-    }
-    
-    // draw power graph
-    var options = {
-        axes: {
-            color: "rgba(6,153,250,1.0)",
-            font: "12px arial"
-        },
-        
-        xaxis: {
-            minor_tick: 60000*10,
-            major_tick: 60000*60
-        },
-        
-        yaxis: {
-            title: "Power (Watts)",
-            units: "W",
-            minor_tick: 250,
-            major_tick: 1000
+        // draw power graph
+        var options = {
+            axes: {
+                color: "rgba(6,153,250,1.0)",
+                font: "12px arial"
+            },
+
+            xaxis: {
+                minor_tick: 60000*10,
+                major_tick: 60000*60
+            },
+
+            yaxis: {
+                title: "Power (Watts)",
+                units: "W",
+                minor_tick: 250,
+                major_tick: 1000
+            }
+        };
+
+        var timewindowhours = Math.round((view.end-view.start)/3600000);
+        options.xaxis.major_tick = 30*24*3600*1000;
+        if (timewindowhours<=24*7) options.xaxis.major_tick = 24*3600*1000;
+        if (timewindowhours<=24) options.xaxis.major_tick = 2*3600*1000;
+        if (timewindowhours<=12) options.xaxis.major_tick = 1*3600*1000;
+        options.xaxis.minor_tick = options.xaxis.major_tick / 4;
+
+
+        var series = {
+            "solar": {
+                color: "rgba(255,255,255,1.0)",
+                data: []
+            },
+            "use": {
+                color: "rgba(6,153,250,0.5)",
+                data: timeseries.data("use")
+            }
+        };
+
+        graph_lines.draw("placeholder_power",series,options);
+        $(".ajax-loader").hide();
+
+        // --------------------------------------------------------------------------------------------------------
+        // THIS WEEK, MONTH, YEAR TOTALS
+        // --------------------------------------------------------------------------------------------------------
+        // All time total
+        var alltime_kwh = feeds[use_kwh].value;
+        // --------------------------------------------------------------------------------------------------------
+        // WEEK: Get the time of the start of the week, if we have rolled over to a new week, load the watt hour
+        // value in the watt accumulator feed recorded for the start of this week. (scale is unitcost)
+        var dayofweek = now.getDay();
+        if (dayofweek>0) dayofweek -= 1; else dayofweek = 6;
+
+        var time = new Date(now.getFullYear(),now.getMonth(),now.getDate()-dayofweek).getTime();
+        if (time!=last_startofweektime) {
+            startofweek = feed.getvalue(use_kwh,time*0.001);
+            last_startofweektime = time;
         }
-    };
-    
-    var timewindowhours = Math.round((view.end-view.start)/3600000);
-    options.xaxis.major_tick = 30*24*3600*1000;
-    if (timewindowhours<=24*7) options.xaxis.major_tick = 24*3600*1000;
-    if (timewindowhours<=24) options.xaxis.major_tick = 2*3600*1000;
-    if (timewindowhours<=12) options.xaxis.major_tick = 1*3600*1000;
-    options.xaxis.minor_tick = options.xaxis.major_tick / 4;
-    
-    
-    var series = {
-        "solar": {
-            color: "rgba(255,255,255,1.0)",
-            data: []
-        },
-        "use": {
-            color: "rgba(6,153,250,0.5)",
-            data: timeseries.data("use")
+        if (startofweek===false) startofweek = 0;
+
+        // Week total
+        var week_kwh = alltime_kwh - startofweek;
+        $("#week_kwh").html((scale*week_kwh).toFixed(1));
+        var days = ((feeds[use_kwh].time - (time*0.001))/86400);
+        $("#week_kwhd").html((scale*week_kwh/days).toFixed(1));
+        // --------------------------------------------------------------------------------------------------------
+        // MONTH: repeat same process as above (scale is unitcost)
+        var time = new Date(now.getFullYear(),now.getMonth(),1).getTime();
+        if (time!=last_startofmonthtime) {
+            startofmonth = feed.getvalue(use_kwh,time*0.001);
+            last_startofmonthtime = time;
         }
-    };
-    
-    graph_lines.draw("placeholder_power",series,options);
-    $(".ajax-loader").hide();
+        if (startofmonth===false) startofmonth = 0;
 
-    // --------------------------------------------------------------------------------------------------------
-    // THIS WEEK, MONTH, YEAR TOTALS
-    // --------------------------------------------------------------------------------------------------------
-    // All time total
-    var alltime_kwh = feeds[use_kwh].value;
-    // -------------------------------------------------------------------------------------------------------- 
-    // WEEK: Get the time of the start of the week, if we have rolled over to a new week, load the watt hour
-    // value in the watt accumulator feed recorded for the start of this week. (scale is unitcost)
-    var dayofweek = now.getDay();
-    if (dayofweek>0) dayofweek -= 1; else dayofweek = 6;
-
-    var time = new Date(now.getFullYear(),now.getMonth(),now.getDate()-dayofweek).getTime();
-    if (time!=last_startofweektime) {
-        startofweek = feed.getvalue(use_kwh,time);
-        last_startofweektime = time;
-    }
-    if (startofweek===false) startofweek = [startalltime*1000,0];
-    
-    // Week total
-    var week_kwh = alltime_kwh - (startofweek[1]);
-    $("#week_kwh").html((scale*week_kwh).toFixed(1));
-    var days = ((feeds[use_kwh].time - (startofweek[0]*0.001))/86400);
-    $("#week_kwhd").html((scale*week_kwh/days).toFixed(1));
-    // --------------------------------------------------------------------------------------------------------       
-    // MONTH: repeat same process as above (scale is unitcost)
-    var time = new Date(now.getFullYear(),now.getMonth(),1).getTime();
-    if (time!=last_startofmonthtime) {
-        startofmonth = feed.getvalue(use_kwh,time);
-        last_startofmonthtime = time;
-    }
-    if (startofmonth===false) startofmonth = [startalltime*1000,0];
-
-
-    // Last 7 days total
-    let time_7d = new Date();
-	time_7d.setDate(time_7d.getDate() - 7);
-    feed7d = feed.getvalue(use_kwh, time_7d.getTime());
-
-    let agora=new Date();
-    var last_7dinterval = time_7d.getDate()+"/"+(time_7d.getMonth()+1)+" a "+agora.getDate()+"/"+(agora.getMonth()+1);
-    $("#last_7dinterval").html(last_7dinterval);
-    var last_7kwh = alltime_kwh - (feed7d[1]);
-    $("#last_7kwh").html(Math.round(scale*last_7kwh));
-    var days = ((feeds[use_kwh].time - (feed7d[0]*0.001))/86400);
-    $("#last_7kwhd").html((scale*last_7kwh/days).toFixed(1));
-
-    // Monthly total
-    var month_kwh = alltime_kwh - (startofmonth[1]);
-    $("#month_kwh").html(Math.round(scale*month_kwh));
-    var days = ((feeds[use_kwh].time - (startofmonth[0]*0.001))/86400);
-    $("#month_kwhd").html((scale*month_kwh/days).toFixed(1));
-    // -------------------------------------------------------------------------------------------------------- 
-    // YEAR: repeat same process as above (scale is unitcost)
-    var time = new Date(now.getFullYear(),0,1).getTime();
-    if (time!=last_startofyeartime) {
-        startofyear = feed.getvalue(use_kwh,time);
-        last_startofyeartime = time;
-    }
-    if (startofyear===false) startofyear = [startalltime*1000,0];
+        // Monthly total
+        var month_kwh = alltime_kwh - startofmonth;
+        $("#month_kwh").html(Math.round(scale*month_kwh));
+        var days = ((feeds[use_kwh].time - (time*0.001))/86400);
+        $("#month_kwhd").html((scale*month_kwh/days).toFixed(1));
+        // --------------------------------------------------------------------------------------------------------
+        // YEAR: repeat same process as above (scale is unitcost)
+        var time = new Date(now.getFullYear(),0,1).getTime();
+        if (time!=last_startofyeartime) {
+            startofyear = feed.getvalue(use_kwh,time*0.001);
+            last_startofyeartime = time;
+        }
+        if (startofyear===false) startofyear = 0;
 
     // Last 30 days total
 	let numDays=30;
